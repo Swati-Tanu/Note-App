@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Create Notes</title>
+</head>
+<body>
+    <div class="heading">
+        <h1>Note Creation Page</h1>
+        <input type="text" id="title" placeholder="Enter Note title...">
+        <textarea type="text" name="" id="body" cols="30" rows="10" placeholder="       Enter Note body..."></textarea>
+        <div class="btn-div">
+        <button onclick="onAdd()" class="learn-more" class="add" id="add">
+            <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+            </span>
+            <span class="button-text">ADD NOTE</span>
+        </button>
+    </div>
+    </div>
+    <script>
+        const onAdd = () => {
+            const payload = {
+                title: document.getElementById("title").value,
+                body: document.getElementById("body").value,
+            }
+            fetch("http://localhost:8000/notes/create", {
+                method: "POST",
+                headers: {
+                    "Content-type":"application/json",
+                    "Authorization": localStorage.getItem("token")
+                },
+                body: JSON.stringify(payload)
+            }).then(res=>res.json())
+            .then(res=>{
+            console.log(res)
+            localStorage.setItem("token",res.token)
+        })
+            .catch(err=>console.log(err))
+        }
+    </script>
+</body>
+</html>
